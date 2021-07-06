@@ -13,12 +13,12 @@ public class Profile
 {
     @Id
     private Long id;
+
     @OneToOne
     @JoinColumn(nullable = false)
     @MapsId
     @JsonIgnore
     private Seller seller;
-
 
     @OneToOne
     @JoinColumn(nullable = false)

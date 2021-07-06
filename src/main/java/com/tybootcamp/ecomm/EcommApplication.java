@@ -59,10 +59,6 @@ public class EcommApplication implements CommandLineRunner {
         michael = _sellerRepository.save(michael);
 
 
-        BasketItem basketItem = new BasketItem((long)1,(long)20, _productJpaRepository.getById((long) 20),1);
-        _basketRepository.save(basketItem);
-
-
         //--------------Create 4 different categories and save them--------------------
         Category artCategory = new Category("Art");
         Category wallDecorCategory = new Category("Wall Decor");
@@ -82,7 +78,7 @@ public class EcommApplication implements CommandLineRunner {
         Seller finalMichael = michael;
         Category finalArtCategory = artCategory;
         Category finalWallDecorCategory = wallDecorCategory;
-
+/*
         IntStream.range(1, 100000000).parallel().forEach(
                 i -> {
                     Book book = new Faker().book();
@@ -92,7 +88,7 @@ public class EcommApplication implements CommandLineRunner {
                             42.34f, imageUrls, finalMichael, new HashSet<>(Arrays.asList(finalArtCategory, finalWallDecorCategory)));
                     _productJpaRepository.save(pictureProduct);
                 }
-        );
+        );*/
 
     }
 }

@@ -1,33 +1,39 @@
 package com.tybootcamp.ecomm.entities;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "shopping_basket")
+@Table(name = "basket_item")
 public class BasketItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private @NotBlank Long userId;
+    @Column(name = "basket_id")
+    private @NotBlank Long basketId;
 
     @Column(name ="product_id")
     private @NotBlank Long productId;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Product product;
-
     private int productQuantity;
 
-    public BasketItem(@NotBlank Long userId, @NotBlank Long productId, Product product, int productQuantity) {
-        this.userId = userId;
+    public BasketItem(Long id, @NotBlank Long basketId, @NotBlank Long productId, int productQuantity) {
+        this.id = id;
+        this.basketId = basketId;
         this.productId = productId;
-        this.product = product;
         this.productQuantity = productQuantity;
+    }
+
+    public BasketItem(Long id, @NotBlank Long basketId, @NotBlank Long productId){
+        this.id = id;
+        this.basketId = basketId;
+        this.productId = productId;
+        this.productQuantity = 1; // Change here
     }
 
     public Long getId() {
@@ -38,12 +44,12 @@ public class BasketItem {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getBasketId() {
+        return basketId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setBasketId(Long basketId) {
+        this.basketId = basketId;
     }
 
     public Long getProductId() {
@@ -52,14 +58,6 @@ public class BasketItem {
 
     public void setProductId(Long productId) {
         this.productId = productId;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public int getProductQuantity() {

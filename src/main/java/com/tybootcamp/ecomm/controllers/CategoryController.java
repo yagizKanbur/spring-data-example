@@ -28,26 +28,13 @@ public class CategoryController {
 
 
     @GetMapping(path = "/")
-    public ResponseEntity<?> getCategoryByName(@RequestParam(value = "name") String name) {
-        if(name == null){
-            return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
-        }
-
-        List<Category> categoryList = categoryService.getCategoryByName(name);
-        if (!categoryList.isEmpty()) {
-            return new ResponseEntity<>(categoryList, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(
-                "There isn't any Category with name: " +
-                        name, HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getCategoryByName(String name) {
+        return  categoryService.getCategoryByName(name);
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<?> addNewCategory(@RequestParam(value = "name") String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return new ResponseEntity<>("Name field cannot be null or empty", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(categoryService.addNewCategory(name), HttpStatus.OK);
+    public ResponseEntity<?> addNewCategory(String name) {
+        return categoryService.addNewCategory(name);
     }
 
    @PutMapping(path = "/")
