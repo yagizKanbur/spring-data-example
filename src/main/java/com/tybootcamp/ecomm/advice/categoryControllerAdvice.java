@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 @ControllerAdvice
 public class categoryControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFound (EntityNotFoundException entityNotFoundException){
-        return new ResponseEntity<>("Entity Not Found", HttpStatus.NOT_FOUND);
+    public ResponseEntity<Boolean> handleEntityNotFound (EntityNotFoundException entityNotFoundException){
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 }

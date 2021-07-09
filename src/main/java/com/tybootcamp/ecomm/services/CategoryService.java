@@ -24,9 +24,6 @@ public class CategoryService {
     }
 
     public ResponseEntity<?>getCategoryByName(String name){
-        if(StringUtils.isBlank(name)){
-            return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
-        }
         List <Category> categoryList = categoryRepository.findAllByName(name);
         if (!categoryList.isEmpty()){
             return new ResponseEntity<>(categoryList, HttpStatus.OK);
@@ -34,23 +31,20 @@ public class CategoryService {
         return new ResponseEntity<>("There isn't any Category with name: " + name, HttpStatus.NOT_FOUND);
     }
 
+    public ResponseEntity<?>getAllCategories (){
+        return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+    }
+
     public ResponseEntity<?> addNewCategory(String name){
-        if(StringUtils.isBlank(name)){
-            return new ResponseEntity<>("Name field cannot be null or empty", HttpStatus.BAD_REQUEST);
-        }
         Category createdCategory = new Category(name.trim());
         createdCategory = categoryRepository.save(createdCategory);
         return new ResponseEntity<>(createdCategory,HttpStatus.OK);
     }
 
-    public Boolean updateCategory(Category category){
-        try {
+    public Boolean updateCategory(Category category){ // Test this service
             Category categoryEntity = categoryRepository.findById(category.getId()).orElseThrow(EntityNotFoundException::new);
             categoryEntity.setName(category.getName());
             categoryRepository.save(categoryEntity);
             return true;
-        } catch (EntityNotFoundException e) {
-           return false;
-        }
     }
 }

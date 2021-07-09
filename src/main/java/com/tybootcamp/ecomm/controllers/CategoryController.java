@@ -3,6 +3,7 @@ package com.tybootcamp.ecomm.controllers;
 import com.tybootcamp.ecomm.entities.Category;
 import com.tybootcamp.ecomm.repositories.CategoryRepository;
 import com.tybootcamp.ecomm.services.CategoryService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +30,17 @@ public class CategoryController {
 
     @GetMapping(path = "/")
     public ResponseEntity<?> getCategoryByName(String name) {
+        if(StringUtils.isBlank(name)){
+            return categoryService.getAllCategories();
+        }
         return  categoryService.getCategoryByName(name);
     }
 
     @PostMapping(path = "/")
     public ResponseEntity<?> addNewCategory(String name) {
+        if(StringUtils.isBlank(name)){
+            return new ResponseEntity<>("Name field cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
         return categoryService.addNewCategory(name);
     }
 
