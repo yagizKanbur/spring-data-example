@@ -2,8 +2,11 @@ package com.tybootcamp.ecomm.controllers;
 
 import com.tybootcamp.ecomm.entities.Profile;
 import com.tybootcamp.ecomm.entities.Seller;
+import com.tybootcamp.ecomm.models.SellerProfileDto;
 import com.tybootcamp.ecomm.repositories.ProductJpaRepository;
 import com.tybootcamp.ecomm.repositories.SellerRepository;
+import com.tybootcamp.ecomm.services.SellerService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,31 +27,26 @@ public class SellerController {
     @Autowired
     private SellerRepository _sellerRepository;
 
+    @Autowired
+    private SellerService sellerService;
+
     @GetMapping(path = "/")
     public ResponseEntity<?> getSellerById(@RequestParam(value = "id") long id)
     {
-        try {
-            Seller seller = _sellerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            System.out.println("The seller with id " + id + " = " + seller.toString());
-            return new ResponseEntity<>(seller, HttpStatus.OK);
-        }
-        catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("There isn't any seller with this name.", HttpStatus.NOT_FOUND);
-        }
+        // Check if id is valid
+        return new ResponseEntity<>(sellerService.getSellerById(id), HttpStatus.OK);
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<Seller> addNewSeller(@Valid @RequestBody Seller seller)
+    public ResponseEntity<?> addNewSeller(@Valid @RequestBody SellerProfileDto sellerProfileDto)
     {
-        Seller sellerEntity = new Seller(seller.getAccountId());
-        Profile profile = new Profile(sellerEntity, seller.getProfile().getFirstName(), seller.getProfile().getLastName(), seller.getProfile().getGender());
-        sellerEntity.setProfile(profile);
-        sellerEntity.getProfile().setWebsite(seller.getProfile().getWebsite());
-        sellerEntity.getProfile().setAddress(seller.getProfile().getAddress());
-        sellerEntity.getProfile().setEmailAddress(seller.getProfile().getEmailAddress());
-        sellerEntity.getProfile().setBirthday(seller.getProfile().getBirthday());
-        sellerEntity = _sellerRepository.save(sellerEntity);
-        return new ResponseEntity<>(sellerEntity, HttpStatus.OK);
+        if(sellerProfileDto.getSeller() == null
+                || StringUtils.isBlank(sellerProfileDto.getFirstName())
+                || StringUtils.isBlank(sellerProfileDto.getLastName()) ){
+
+            return new ResponseEntity<>("Missing necessary info", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(sellerService.addNewSeller(sellerProfileDto), HttpStatus.OK);
     }
 
     @PutMapping(path = "/")

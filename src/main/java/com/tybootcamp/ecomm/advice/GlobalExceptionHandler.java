@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.persistence.EntityNotFoundException;
 
 @ControllerAdvice
-public class categoryControllerAdvice {
+public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Boolean> handleEntityNotFound (EntityNotFoundException entityNotFoundException){
-        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> handleEntityNotFound (EntityNotFoundException entityNotFoundException){ // Check this
+        return new ResponseEntity<>("Entity Not Found", HttpStatus.NOT_FOUND);
     }
 }

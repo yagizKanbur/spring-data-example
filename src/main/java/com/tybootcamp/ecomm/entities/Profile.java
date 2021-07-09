@@ -2,6 +2,7 @@ package com.tybootcamp.ecomm.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tybootcamp.ecomm.enums.Gender;
+import com.tybootcamp.ecomm.models.SellerProfileDto;
 
 import java.util.Date;
 
@@ -48,13 +49,19 @@ public class Profile
         this.customer = customer;
     }
 
-    public Profile(Seller seller, String firstName, String lastName, Gender gender)
+    public Profile(SellerProfileDto sellerProfileDto)
     {
-        this.seller = seller;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
+        this.seller = sellerProfileDto.getSeller();
+        this.id = sellerProfileDto.getProfileId();
+        this.firstName = sellerProfileDto.getFirstName();
+        this.lastName = sellerProfileDto.getLastName();
+        this.gender = sellerProfileDto.getGender();
+        this.website = sellerProfileDto.getWebsite();
+        this.birthday = sellerProfileDto.getBirthday();
+        this.address = sellerProfileDto.getAddress();
+        this.emailAddress = sellerProfileDto.getEmailAddress();
     }
+
 
     public long getId()
     {
